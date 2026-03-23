@@ -1,0 +1,26 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(ls -lah \"c:\\\\Users\\\\User\\\\Desktop\\\\FormReader\\\\models\\\\trocr-turkish-handwritten\"\" 2>&1 || echo \"Directory not found \")",
+      "WebFetch(domain:discuss.huggingface.co)",
+      "WebFetch(domain:github.com)",
+      "WebFetch(domain:arxiv.org)",
+      "Bash(pdftotext -f 1 -l 5 \"c:/Users/User/Desktop/FormReader/docs/cites/11- !! Enhanced_Hybrid_Technique_for_Efficient_Digitizati.pdf\" -)",
+      "Bash(pdftotext -f 1 -l 5 \"11- !! Enhanced_Hybrid_Technique_for_Efficient_Digitizati.pdf\" -)",
+      "Bash(pdftotext -f 1 -l 3 '/c/Users/User/Desktop/FormReader/docs/cites/11- !! Enhanced_Hybrid_Technique_for_Efficient_Digitizati.pdf' /dev/stdout)",
+      "Bash(python -c \":*)",
+      "Bash(pip install PyPDF2 --quiet)",
+      "Bash(python -c \"import sys; print\\(sys.executable\\)\")",
+      "Bash(python -m pip install PyPDF2 --quiet)",
+      "Bash(python -c \"import PyPDF2; print\\(''OK''\\)\")",
+      "WebSearch",
+      "WebFetch(domain:medium.com)",
+      "Bash(find /c/Users/User/Desktop/FormReader/docs -name *.md -type f)",
+      "WebFetch(domain:ar5iv.labs.arxiv.org)",
+      "Bash(gh auth:*)",
+      "Bash(git init:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)"
+    ]
+  }
+}
