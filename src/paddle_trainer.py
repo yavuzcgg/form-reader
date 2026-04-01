@@ -36,7 +36,7 @@ TRAIN_LIST = os.path.join(DATA_DIR, "train_list.txt")
 VAL_LIST = os.path.join(DATA_DIR, "val_list.txt")
 
 # PP-OCRv4 Server Recognition config (derin mimari, Türkçe diyakritik için uygun)
-BASE_CONFIG = "configs/rec/PP-OCRv4/ch_PP-OCRv4_rec_hgnet.yml"
+BASE_CONFIG = "configs/rec/PP-OCRv4/PP-OCRv4_server_rec.yml"
 PRETRAINED_MODEL_URL = "https://paddleocr.bj.bcebos.com/PP-OCRv4/chinese/ch_PP-OCRv4_rec_server_train.tar"
 
 
@@ -160,27 +160,12 @@ def train(epochs=100, batch_size=32):
 
     os.makedirs(OUTPUT_DIR, exist_ok=True)
 
-    # Eğitim komutu
-    config_path = os.path.join(PADDLEOCR_DIR, BASE_CONFIG)
+    # Özel Türkçe config dosyası (tüm path'ler relative, Windows uyumlu)
+    config_path = os.path.join(PROJECT_DIR, "configs", "turkish_rec.yml")
 
     cmd = [
         "python", os.path.join(PADDLEOCR_DIR, "tools", "train.py"),
         "-c", config_path,
-        "-o", f"Global.pretrained_model={pretrained_path}",
-        "-o", f"Global.character_dict_path={DICT_PATH}",
-        "-o", "Global.use_space_char=true",
-        "-o", f"Global.save_model_dir={OUTPUT_DIR}",
-        "-o", f"Global.epoch_num={epochs}",
-        "-o", f"Train.dataset.name=SimpleDataSet",
-        "-o", f"Train.dataset.data_dir={DATA_DIR}",
-        "-o", f"Train.dataset.label_file_list=['{TRAIN_LIST}']",
-        "-o", f"Train.loader.batch_size_per_card={batch_size}",
-        "-o", f"Train.loader.num_workers=0",
-        "-o", f"Eval.dataset.name=SimpleDataSet",
-        "-o", f"Eval.dataset.data_dir={DATA_DIR}",
-        "-o", f"Eval.dataset.label_file_list=['{VAL_LIST}']",
-        "-o", f"Eval.loader.batch_size_per_card={batch_size}",
-        "-o", f"Eval.loader.num_workers=0",
     ]
 
     print("\n" + "-" * 60)
@@ -193,11 +178,24 @@ def train(epochs=100, batch_size=32):
     print("-" * 60)
 
     try:
-        subprocess.run(cmd, check=True)
-    except subprocess.CalledProcessError as e:
-        print(f"\n[HATA] Eğitim hatası: {e}")
-        raise
+        process = subprocess.Popen(
+            cmd,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.STDOUT,
+            text=True,
+            encoding='utf-8',
+            errors='replace',
+            cwd=PROJECT_DIR,
+            bufsize=1
+        )
+        for line in process.stdout:
+            print(line, end='', flush=True)
+        process.wait()
+        if process.returncode != 0:
+            print(f"\n[HATA] Eğitim hatası (exit code: {process.returncode})")
+            return
     except KeyboardInterrupt:
+        process.terminate()
         print("\n[Bilgi] Eğitim kullanıcı tarafından durduruldu.")
 
     print("\n" + "=" * 60)
