@@ -2,6 +2,13 @@
 # FormReader Project .gitignore
 # ===============================
 
+# ----- PaddleOCR Repo -----
+PaddleOCR/
+
+# ----- Output -----
+output/
+src/output/
+
 # ----- Data Klasörü -----
 # Tüm veri dosyaları (büyük boyutlu)
 data/
