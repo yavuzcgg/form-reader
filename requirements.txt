@@ -1,9 +1,88 @@
-opencv-python
-numpy
-matplotlib
-pandas
-transformers
-torch
-Pillow
-jiwer
-openpyxl
+# ==============================================================================
+# FormReader - TÜBİTAK 3501 Projesi
+# Python: 3.12
+# CUDA: 12.1 (PyTorch) / 12.6 (PaddlePaddle)
+# GPU: NVIDIA RTX 4070 Super 12GB
+# OS: Windows 11
+# ==============================================================================
+
+# --- Ana OCR Motoru: PaddleOCR (Deney #006+) ---
+# paddlepaddle-gpu CUDA 12.6 wheel'ini kullanır, özel index ile kurulur:
+#   pip install paddlepaddle-gpu==3.0.0 -i https://www.paddlepaddle.org.cn/packages/stable/cu126/
+paddlepaddle-gpu==3.0.0
+paddleocr==3.4.0
+paddlex==3.4.3
+
+# --- PaddleOCR Bağımlılıkları ---
+# Bu versiyonlar BİRBİRİNE BAĞLI - değiştirmeyin, PaddleOCR patlar
+albumentations==2.0.8
+albucore==0.0.24
+scikit-image==0.24.0
+numkong==7.2.4
+pyclipper==1.4.0
+shapely==2.1.2
+
+# --- Görüntü İşleme ---
+# opencv-python 4.9.0 numpy 1.26.x ile uyumlu (yeni sürüm numpy 2.x ister)
+opencv-python==4.9.0.80
+Pillow==12.0.0
+
+# --- Temel Bilimsel Hesaplama ---
+# numpy 1.26.4 - ÖNEMLİ: torch + paddle + pandas + scipy ile uyumlu tek versiyon
+# 2.x'e yükseltme TÜM paketleri kırar
+numpy==1.26.4
+scipy==1.13.1
+pandas==2.2.2
+matplotlib==3.9.2
+
+# --- Config ---
+PyYAML==6.0.2
+
+# --- Legacy: TrOCR (Deney #001-#005, src/legacy/ için) ---
+# Aktif kullanılmıyor ama eski kodlar referans için tutuluyor
+torch==2.5.1
+torchvision==0.20.1
+torchaudio==2.5.1
+transformers==4.57.5
+
+# --- Metrikler & Excel ---
+jiwer==4.0.0
+openpyxl==3.1.5
+
+# ==============================================================================
+# KURULUM TALİMATLARI
+# ==============================================================================
+#
+# 1. PaddlePaddle GPU (CUDA 12.6 wheel):
+#    pip install paddlepaddle-gpu==3.0.0 -i https://www.paddlepaddle.org.cn/packages/stable/cu126/
+#
+# 2. PyTorch GPU (CUDA 12.1):
+#    pip install torch==2.5.1 torchvision==0.20.1 torchaudio==2.5.1 --index-url https://download.pytorch.org/whl/cu121
+#
+# 3. Diğer paketler:
+#    pip install -r requirements.txt
+#
+# 4. PaddleOCR repo (fine-tuning için):
+#    git clone https://github.com/PaddlePaddle/PaddleOCR.git
+#
+# 5. Windows DLL fix (Paddle + Torch cuDNN çakışması):
+#    - NVIDIA DLL'leri paddle/libs/ klasörüne kopyala
+#    - src/paddle_pipeline.py içinde otomatik yapılıyor
+#
+# ==============================================================================
+# KRİTİK BAĞIMLILIK NOTLARI
+# ==============================================================================
+#
+# - numpy 1.26.4: DEĞİŞTİRMEYİN. 2.x'e yükseltmek torch, scipy, pandas kırar.
+# - opencv-python 4.9.0: numpy 1.26 ile uyumlu. 4.10+ numpy 2.x ister.
+# - albumentations 2.0.8 + albucore 0.0.24: EŞLEŞMELİ. albucore 0.1.x patlar.
+# - scikit-image 0.24.0: PaddleOCR'ın data pipeline'ı için gerekli.
+# - paddlepaddle-gpu 3.0.0: cuDNN 9 getirir, 2.6.2 cuDNN 8 istiyor (bozuk).
+# - scipy 1.13.1: numpy 1.26 ile C derlemesi uyumlu.
+#
+# Yeni paket eklerken:
+# 1. Hangi paket için gerekli olduğunu yorum satırı olarak ekleyin
+# 2. Versiyon kilidi koyun (==X.Y.Z)
+# 3. Mevcut paketleri kırmadığını doğrulayın (pip check)
+# 4. CLAUDE.md'deki bağımlılık kurallarına uyun
+# ==============================================================================

@@ -76,6 +76,27 @@ Paper'da açıkça belirtilmiş:
 - Problemlerde **web search** yapılmalı (GitHub, HuggingFace, arxiv, Stack Overflow)
 - Sonuçlar `docs/web_search.md`'ye kaydedilmeli
 
+### Bağımlılık Yönetimi Kuralı (KRİTİK)
+Her yeni paket kurulduğunda veya versiyon değişikliği yapıldığında `requirements.txt` GÜNCELLENMELİ.
+
+**Kurallar:**
+1. Yeni paket kurulunca → emin olduktan sonra (çalıştığı doğrulandıktan sonra) `requirements.txt`'ye **versiyon kilidi ile** eklenir (`paket==X.Y.Z`)
+2. Her pakete yorum satırı eklenir: hangi modül/deney için gerekli
+3. Versiyon değişikliği yapılırsa (downgrade/upgrade) → yorum olarak NEDEN'i yazılır
+4. Paket silmeden önce → proje içinde kullanımı grep'lenir, başka yerde kullanılmıyorsa silinir
+5. Yeni paket **mevcut paketleri kırmamalı** (`pip check` ile doğrula)
+6. Windows-özel kurulum komutları (CUDA wheel vs.) `requirements.txt` başında belirtilir
+
+**Neden önemli:**
+- Yeni bir makinede projeyi kurmak için tek referans `requirements.txt`
+- TrOCR → PaddleOCR geçişinde numpy/torch/paddle uyumsuzlukları saatler kaybettirdi
+- TÜBİTAK teslim aşamasında jüriye veriyoruz, çalışır olmalı
+
+**Her deney sonrası kontrol:**
+- Yeni paket kuruldu mu? → requirements.txt'ye ekle
+- Versiyon değişti mi? → requirements.txt'yi güncelle
+- Commit et
+
 ### Detaylı Bilgi
 Teknik gereksinimler ve proje detayları için:
 ```
